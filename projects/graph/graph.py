@@ -38,14 +38,56 @@ class Graph:
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+
+        # Create a queue
+        q = Queue()
+        # Enqueue the starting vertex
+        q.enqueue(starting_vertex)
+        # Create a set to store visited vertices
+        visited = set()
+        # While the queue is not empty...
+        while q.size() > 0:
+            # Dequeue the first vertex
+            v = q.dequeue()
+            # Check if it's been visited
+            # If it hasn't been visited....
+            if v not in visited:
+             # Mark it ar visited
+                print(v)
+                visited.add(v)
+             # Enqueue all it's neighbors
+                for neighbor in self.get_neighbors(v):
+                    q.enqueue(neighbor)
+
+      
+        
 
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+
+        # Create a stack
+        s = Stack()
+        # Push the starting vertex
+        s.push(starting_vertex)
+        # Create a set to store visited vertices
+        visited = set()
+        # While the stack is not empty...
+        while s.size() > 0:
+            # Pop the first vertex
+            v = s.pop
+            # Check if it's been visited
+            # If it hasn't been visited....
+            if v not in visited:
+             # Mark it ar visited
+                print(v)
+                visited.add(v)
+             # Push all it's neighbors onto the stack
+                for neighbor in self.get_neighbors(v):
+                    s.push(neighbor)
+        
 
     def dft_recursive(self, starting_vertex):
         """
@@ -54,6 +96,11 @@ class Graph:
 
         This should be done using recursion.
         """
+
+        # Check is the node has been visited
+        # If not...
+            # Mark it as visited
+            # Call dft_recursive on each neighbor
         pass  # TODO
 
     def bfs(self, starting_vertex, destination_vertex):
@@ -62,6 +109,19 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
+        # Create a queue
+        # Enqueue a PATH TO the starting vertex
+        # Create a set to store visited vertices
+        # While the queue is not empty...
+            # Dequeue the first PATH
+            # GRAB THE LAST VERTEX FROM THE END OF THE PATH
+            # Check if it's been visited
+            # If it hasn't been visited...
+                # Mark it as visited
+                # CHECK IF IT'S THE TARGET
+                
+
+
         pass  # TODO
 
     def dfs(self, starting_vertex, destination_vertex):
