@@ -108,7 +108,7 @@ class Graph:
             if sub_vertex not in visited:
                 # Call dft_recursive on each neighbor
                 self.dft_recursive(sub_vertex, visited)
-        pass  # TODO
+        
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -117,23 +117,39 @@ class Graph:
         breath-first order.
         """
         # Create a queue
+        q = Queue()
         # Enqueue a PATH TO the starting vertex
+        q.enqueue([starting_vertex])
         # Create a set to store visited vertices
+        visited = set()
         # While the queue is not empty...
+        while q.size() > 0:
             # Dequeue the first PATH
+            v = q.dequeue()
             # GRAB THE LAST VERTEX FROM THE END OF THE PATH
+            last_v = v[-1]
             # Check if it's been visited
             # If it hasn't been visited...
+            if last_v not in visited:
                 # Mark it as visited
                 # CHECK IF IT'S THE TARGET
+                if last_v == destination_vertex:
                     # IF SO, RETURN THE PATH
+                    return v
                 # Enqueue A PATH TO all it's neighbors
+                else:
+                    visited.add(last_v)
                     # MAKE A COPY OF THE PATH
-                    # ENQUEUE THE COPY
+                    for neighbor in self.vertices[last_v]:
+                        path = v[:]
+                        path.append(neighbor)
+                        # ENQUEUE THE COPY
+                        q.enqueue(path)
 
 
 
-        pass  # TODO
+
+        # pass  # TODO
 
     def dfs(self, starting_vertex, destination_vertex):
         """
