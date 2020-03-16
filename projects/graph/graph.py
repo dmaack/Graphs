@@ -77,7 +77,7 @@ class Graph:
         # While the stack is not empty...
         while s.size() > 0:
             # Pop the first vertex
-            v = s.pop
+            v = s.pop()
             # Check if it's been visited
             # If it hasn't been visited....
             if v not in visited:
@@ -89,7 +89,7 @@ class Graph:
                     s.push(neighbor)
         
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, visited=None):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
@@ -99,8 +99,15 @@ class Graph:
 
         # Check is the node has been visited
         # If not...
+        if visited is None:
+            visited = set()
             # Mark it as visited
-            # Call dft_recursive on each neighbor
+        visited.add(starting_vertex)
+        print(starting_vertex)
+        for sub_vertex in self.vertices[starting_vertex]:
+            if sub_vertex not in visited:
+                # Call dft_recursive on each neighbor
+                self.dft_recursive(sub_vertex, visited)
         pass  # TODO
 
     def bfs(self, starting_vertex, destination_vertex):
@@ -119,7 +126,11 @@ class Graph:
             # If it hasn't been visited...
                 # Mark it as visited
                 # CHECK IF IT'S THE TARGET
-                
+                    # IF SO, RETURN THE PATH
+                # Enqueue A PATH TO all it's neighbors
+                    # MAKE A COPY OF THE PATH
+                    # ENQUEUE THE COPY
+
 
 
         pass  # TODO
@@ -130,6 +141,21 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
+
+        # Create a stack
+        # Push a PATH TO the starting vertex
+        # Create a set to store visited vertices
+        # While the stack is not empty...
+            # Pop the first PATH
+            # GRAB THE LAST VERTEX FROM THE END OF THE PATH
+            # Check if it's been visited
+            # If it hasn't been visited...
+                # Mark it as visited
+                # CHECK IF IT'S THE TARGET
+                    # IF SO, RETURN THE PATH
+                # PUSH A PATH TO all it's neighbors
+                    # MAKE A COPY OF THE PATH
+                    # PUSH THE COPY
         pass  # TODO
 
     def dfs_recursive(self, starting_vertex):
