@@ -159,20 +159,35 @@ class Graph:
         """
 
         # Create a stack
+        s = Stack()
         # Push a PATH TO the starting vertex
+        s.push([starting_vertex])
         # Create a set to store visited vertices
+        visited = set()
         # While the stack is not empty...
+        while s.size() > 0:
             # Pop the first PATH
+            v = s.pop()
             # GRAB THE LAST VERTEX FROM THE END OF THE PATH
+            last_v = v[-1]
             # Check if it's been visited
             # If it hasn't been visited...
+            if last_v not in visited:
                 # Mark it as visited
                 # CHECK IF IT'S THE TARGET
+                if last_v == destination_vertex:
                     # IF SO, RETURN THE PATH
+                    return v
                 # PUSH A PATH TO all it's neighbors
+                else:
                     # MAKE A COPY OF THE PATH
-                    # PUSH THE COPY
-        pass  # TODO
+                    visited.add(last_v)
+                    for neighbor in self.vertices[last_v]:
+                        path = v[:]
+                        path.append(neighbor)
+                        # PUSH THE COPY
+                        s.push(path)
+        # pass  # TODO
 
     def dfs_recursive(self, starting_vertex):
         """
