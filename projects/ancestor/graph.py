@@ -198,11 +198,13 @@ class Graph:
         This should be done using recursion.
         """
         
-        # Check if it's been visited
+        # Check if the node has been visited
+        # If not...
         if visited == None:
             # If it hasnt been visited, create a set to store visited vertices
             visited = set()
-        # Check is there is a path
+        # Check if the path has been visited
+        # If not...
         if path == None:
             # If not, create one with a list
             path = []
@@ -216,19 +218,13 @@ class Graph:
             return path
         
 
+        # for neighbor in self.get_neighbors(starting_vertex):
+        #     if neighbor not in visited:
+        #        new_path= self.dfs_recursive(neighbor,destination_vertex,visited, path)
+        #        if new_path:
+        #           return new_path
 
-
-        visited.add(starting_vertex)  # add all the visited nodes
-        path= path+[starting_vertex]# adding each visited node to the path
-        if starting_vertex==destination_vertex:
-            return path
-        for neighbor in self.get_neighbors(starting_vertex):
-            if neighbor not in visited:
-               new_path= self.dfs_recursive(neighbor,destination_vertex,visited, path)
-               if new_path:
-                  return new_path
-
-        return None
+        # return None
 
 
 
