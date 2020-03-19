@@ -28,3 +28,17 @@ Definitions:
 
 # We want to write code to populate our social network
 # we want to create x users to test our 
+
+
+
+# DAY 4:
+
+    # DFS, BFS, STACKS, QUEUES, HASH TABLES, SETS, RECURSION?
+
+    # adv
+        # loading world (world.py)
+            # print rooms function -- a world visualization algorithm
+        # open files to read graph
+        # add directions in traverse_path = []
+        # 
+        # try to go for non randomness first to help track bugs correctly 

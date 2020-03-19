@@ -59,6 +59,10 @@ def words_are_neighbors(w1, w2):
                 return True
     return False
 
+
+# ---------------------------------------------------------------------
+
+
 def words_are_neighbors(w1, w2):
     if len(w1) != len(w2):
         return False
@@ -77,7 +81,7 @@ neighbors = {}
 for word in words:
     neighbors[word] = set()
     # Go through each potential neighbor
-    for potential_neighbor in neighbors:
+    for potential_neighbor in words:
         # Add the neighbors if the match
         if words_are_neighbors(word, potential_neighbor):
             neighbors[word].add(potential_neighbor)

@@ -1,5 +1,5 @@
 import random
-from util import Queue
+from util import Queue, Stack
 
 class User:
     def __init__(self, name):
@@ -30,6 +30,12 @@ class SocialGraph:
         self.last_id += 1  # automatically increment the ID to assign the new user
         self.users[self.last_id] = User(name)
         self.friendships[self.last_id] = set()
+
+
+
+# ------------------ Quadradic -------------------- #
+
+
 
     def populate_graph(self, num_users, avg_friendships):
         """
@@ -74,6 +80,41 @@ class SocialGraph:
             friendship = possible_friendships[i]
             self.add_friendship(friendship[0], friendship[1])     
 
+         
+
+# ------------------ Linear -------------------- #
+
+
+    def populate_graph_linear(self, num_users, avg_friendships):
+        # Reset graph
+        self.last_id = 0
+        self.users = {}
+        self.friendships = {}
+
+        # Add users
+        # Write a for loop that calls create user the right amount of times
+        for i in range(num_users):
+            self.add_user(f"User {i + 1}")
+        
+        target_friendships = num_users * avg_friendships // 2
+        total_friendships = 0 
+        collisions = 0
+        while total_friendships < target_friendships:
+            # Pick a random user
+            user_id = random.randint(1, num_users)
+            # Pick another random user
+            friend_id = random.randint(1, num_users)
+            # Try to create the friendship
+            if self.add_friendship(user_id, friend_id):
+                # If it works, increment the counter
+                total_friendships += 1
+            else:
+                # If not, try again
+                collisions += 1
+
+
+
+
 
     def get_all_social_paths(self, user_id):
         """
@@ -84,58 +125,71 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        visited = {}  # Note that this is a dictionary, not a set
+        
         # !!!! IMPLEMENT ME
 
         # create empty queue
         q = Queue() 
         # add a path to the starting node to the queue
         q.enqueue([user_id])
+        visited = {}  # Note that this is a dictionary, not a set
 
         # While the queue is not empty...
         while q.size() > 0: 
             # Dequeue the first path from the queue
             path = q.dequeue()
-            last_v = path[-1]
+            # Grab the last ID from the path
+            current_id = path[-1]
             # Check if it's been visited
-            if last_v not in visited:
+            # If not...
+            if current_id not in visited: # checks key not value with dictionary
                 # When we reach an unvisited node, add the path to visited dictionary
-                visited[last_v] = path
+                visited[current_id] = path
 
             # Add a path to each neighbor to the back of the queue
-            for v in self.friendships[last_v]:
-                if v not in visited:
-                    path_copy = list(path)
-                    path_copy.append(v)
+            for friend_id in self.friendships[current_id]:
+                if friend_id not in visited:
+                    path_copy = path.copy()
+                    path_copy.append(friend_id)
                     q.enqueue(path_copy)
         # Return visited dictionary
         return visited
 
        
-
+import time
 
 if __name__ == '__main__':
 
 
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    # sg.populate_graph(10, 2)
+    sg.populate_graph(1000, 5)
     # sg.populate_graph(num_users, avg_friendships)
+    # print(f'Users: {sg.users}')
     print(f'Friendships: {sg.friendships}')
     connections = sg.get_all_social_paths(1)
     print(f'Connections: {connections}')
+    print(f'Connections: {len(connections) / 1000 }')
+    total = 0 
+    for path in connections.values():
+        total += len(path)
+    print(f'AVG degrees of separation = {total / len(connections)}')
 
 
 
 # N = avg_friendships * num_users // 2
-# average friendships = total friendships / num_users
-# total friendships = avg_friendships * num_users
+# average_friendships = total friendships / num_users
+# total_friendships = avg_friendships * num_users
 
 
 '''
  Q1: 
 
  N = 10 * 100 // 2 
- N = 
+ N = 500
+
+ Q2:
+connected by ~4 degrees of separation
 
 
 
