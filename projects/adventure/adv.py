@@ -94,18 +94,41 @@ def find_shortest_path(starting_room_id): #search for shortest path (BFS)
         current_room = path[-1]
         print("current room", current_room, "\n\n")
         visited.add(current_room)
-        print("visited", visited)
+        # print("visited", visited)
+
+        
+
+def search(starting_room):
+
+    # Rooms visited counter
+    visited_room = 0
+    # opposing directions for back tracking
+    back_track = {'n':'s', 's':'n', 'e':'w', 'w':'e'}
+
+    # What room we are currently in
+    current_room = player.current_room
+    print("Players current room: ", current_room)
+    # The id we are currently in
+    print("Players current room ID: ", player.current_room.id)
+    room_id = player.current_room.id
+
+    #prints out directions
+    print("Exits", player.current_room.get_exits() ) 
+
+    # build graph and make a dictionary of rooms 
+    room_dict = {}      # 0: { n: '?', s: '?', e: '?', w: '?' }
+
+    
+    
 
 
-print(find_shortest_path(room_graph))
-
-
-
-
-
-
-
-
+print("---------------")
+print("Search", search(room_graph))
+print("---------------")
+print("Traversal Graph", traversal_graph) 
+print("---------------")
+print("Traversal path", traversal_path)
+print("---------------")
 
 
 
@@ -134,12 +157,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.current_room.print_room_description(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     elif cmds[0] == "q":
-#         break
-#     else:
-#         print("I did not understand that command.")
+player.current_room.print_room_description(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    elif cmds[0] == "q":
+        break
+    else:
+        print("I did not understand that command.")
