@@ -46,12 +46,12 @@ def find_shortest_path(starting_room_id):
     while q.size() > 0:
         # Dequeue the first available PATH
         path = q.dequeue()
-        print("path", path, "\n\n")
+        #print("path", path, "\n\n")
         # current_room = Grab the last room_id from the end of the PATH
         current_room = path[-1]
-        print("current room", current_room, "\n\n")
+        #print("current room", current_room, "\n\n")
         visited.add(current_room)
-        print("visited", visited)
+        #print("visited", visited)
 
 
         # for each connection in current room
@@ -59,7 +59,7 @@ def find_shortest_path(starting_room_id):
             print('Traversal Graph Directions in BFS', traversal_graph[current_room]) # not printing
 
             if traversal_graph[current_room][direction] == '?':
-                print('path in conditional: ', path)
+                #print('path in conditional: ', path)
                 # return to available paths
                 return path
                 
@@ -85,7 +85,7 @@ def search(starting_room):
 
          # What room we are currently in
         current_room = player.current_room
-        print("Players current room: ", current_room)
+        #print("Players current room: ", current_room)
         # The id we are currently in
         print("Players current room ID: ", player.current_room.id)
         room_id = current_room.id
@@ -122,7 +122,7 @@ def search(starting_room):
         else:
             # add room_id from traversal_graph to room_dict
             room_dict = traversal_graph[room_id]
-            print('else: room dict: ', room_dict)
+            #print('else: room dict: ', room_dict)
 
         # Now I see the '?', need to check if there is a room connected
         # store '?'
@@ -148,17 +148,17 @@ def search(starting_room):
 
             # append the random picked direction to traversal path
             traversal_path.append(direction)
-            print('traversal path in conditional (186)', traversal_path)
+            #print('traversal path in conditional (186)', traversal_path)
 
             # move player in 'direction' of travel_path
             player.travel(direction)
-            print('move', direction)
+            #print('move', direction)
             print('exits in current room', player.current_room.get_exits())
 
             # grab the player current room 
             move_rooms = player.current_room
-            print('move_rooms = current room:', move_rooms)
-            print('move_rooms = current room ID:', move_rooms)
+            #print('move_rooms = current room:', move_rooms)
+            print('move_rooms = current room ID:', move_rooms.id)
             print('dictionary after move: ', traversal_graph[current_room.id][direction])
 
             # replace '?' with room_ids
@@ -173,16 +173,16 @@ def search(starting_room):
 
             # if path from next_room has results from bfs 
             if next_room is not None and len(next_room) > 0: 
-                print('this code ran')
+                #print('this code ran')
 
                 # iterate the length of the room to access room_ids
                 for i in range(len(next_room) - 1):
-                    print('else i: ', i)
-                    print('traversal graph at [i]', traversal_graph[next_room[i]])
+                    #print('else i: ', i)
+                    #print('traversal graph at [i]', traversal_graph[next_room[i]])
                     
                     # iterate the traversal_graphs next_room value to acces it's direction
                     for direction in traversal_graph[next_room[i]]:
-                        print('direction in double for loop', direction)
+                        #print('direction in double for loop', direction)
                         
                         # if the traversal_graphs next room value and direction matches the bfs found next room value
                         if traversal_graph[next_room[i]][direction] == next_room[i + 1]:
