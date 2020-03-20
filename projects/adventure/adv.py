@@ -12,8 +12,8 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
+# map_file = "maps/test_line.txt"
+map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
@@ -138,7 +138,7 @@ def search(starting_room):
     
     # while the length of taversal_graph does not equal the length of room_graph
     while len(traversal_graph) != len(room_graph):
-        print("current room: ", current_room.id)
+        print("current room: ", current_room.id) # not updating
         # if room_id is not in traversal_graph:
         if room_id not in traversal_graph:
             # Iterate through current room exits to find the possible exits:
@@ -146,14 +146,16 @@ def search(starting_room):
                 # add the "?" to corresponding key in the room dictionary
                 print("i: ", i) # prints n direction
                 room_dict[i] = '?'
-                print("room dictionary", room_dict) 
-            # update room
+                print("building room dictionary", room_dict) 
+            # update room ??? 
             if traversal_path:
                 prev_room = back_track[traversal_path[-1]]
-                print('prev_room', prev_room)
+                print('prev_room', prev_room) # not printing
                 room_dict[prev_room] = prev_room
+                print('prev_room', prev_room)
             #add the unexplored room to the room id
             traversal_graph[room_id] = room_dict
+            print('room dict after while', room_dict)
             
 
         else:
@@ -181,15 +183,22 @@ def search(starting_room):
             print('You moved: ', direction)
 
             traversal_path.append(direction)
-            print('traversal path in if possible_exists', traversal_path)
+            print('traversal path in conditional (186)', traversal_path)
 
             for move in traversal_path:
                 # move player in 'direction' of travel_path
                 player.travel(move)
                 print('move', move)
+                print('exits in current room', player.current_room.get_exits())
+
+                exits = player.current_room.get_exits()
+                print('pick exit', exits[0])
                 
                 move = player.current_room
-                print('move = current room:', player.current_room.get_exits())
+                print('move = current room:', move) # not printing
+            
+            traversal_path.append(exits[0])
+            print('traversal path after move loop', traversal_path)
 
              
         
