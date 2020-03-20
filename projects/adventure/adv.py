@@ -30,6 +30,55 @@ player = Player(world.starting_room)
 traversal_path = []
 
 
+'''
+Create an algorithm that traverses the map (s)
+Add the direction the player is headed when .move is played
+Use BFS to to find rooms with an empty space in any direction
+    if it's not an empty
+        add it to the queue
+If it's an empty space
+    add to the the advGraph rooms until all visited
+
+
+'''
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+class Stack():
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
+class AdvGraph():
+    def __init__(self, size=0):
+        self.rooms ={}
+        self.size = size
+    
+    def add_rooms(self, room_id):
+        self.rooms[room_id] = { 'n': '', 's': '', 'e': '', 'w': ''}
+        self.size += 1
+
+
+
 
 # TRAVERSAL TEST
 visited_rooms = set()
