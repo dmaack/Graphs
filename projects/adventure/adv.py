@@ -10,16 +10,15 @@ from ast import literal_eval
 # Load world
 world = World()
 
-
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
-room_graph=literal_eval(open(map_file, "r").read())
+room_graph = literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
 # Print an ASCII map
@@ -28,56 +27,14 @@ world.print_rooms()
 player = Player(world.starting_room)
 
 
-'''
-READ.ME Notes:
-
-    You may find the commands useful:
-        `player.current_room.id`, 
-        `player.current_room.get_exits()`, 
-        `player.travel(direction)` 
-
-Plan:
-
-    1: construct your own traversal graph
-    2: use BFS for exploring / searching 
-    3: Use DFT for creating map / maze ( what about recursion? )
-        3a: how to connect / compare to test data (room_graph)
-        3b: need a counter for keeping track of previous rooms?
-
-   def dft_recursive(self, starting_vertex, visited=None):
-        """
-        Print each vertex in depth-first order
-        beginning from starting_vertex.
-
-        This should be done using recursion.
-        """
-
-        # Check is the node has been visited
-        # If not...
-        if visited is None:
-            visited = set()
-            # Mark it as visited
-        visited.add(starting_vertex)
-        print(starting_vertex)
-        // Instead of for each, 
-            // pick one at random
-            if sub_vertex with ? pick one
-                # Call dft_recursive on each neighbor
-                self.dft_recursive(sub_vertex, visited)
-            else there are no ? to follow
-                bfs to find a vertex with ?
-                should return a vertex
-                call dft on found vertex
-                add the path of visited to dft
-
-'''
-
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
 traversal_graph = {}
 
-def find_shortest_path(starting_room_id): #search for shortest path (BFS)
+
+# BFS: search for shortest path
+def find_shortest_path(starting_room_id): 
     # Create a queue
     q = Queue()
     # Enqueue a PATH TO the starting vertex (starting_room_id)
@@ -99,22 +56,22 @@ def find_shortest_path(starting_room_id): #search for shortest path (BFS)
 
         # for each connection in current room
         for direction in traversal_graph[current_room]:
-            print('Traversal Graph Directions in BFS', traversal_graph[current_room])
+            print('Traversal Graph Directions in BFS', traversal_graph[current_room]) # not printing
 
             if traversal_graph[current_room][direction] == '?':
                 print('path in conditional: ', path)
-                # return available paths
+                # return to available paths
                 return path
                 
             elif traversal_graph[current_room][direction] not in visited:
                 # create new path to append/add direction/edge
                 new_path = list(path)
-                path.append(traversal_graph[current_room][direction])
+                new_path.append(traversal_graph[current_room][direction])
                 q.enqueue(new_path)
                 print('Appending direction', new_path)
 
         
-
+# DFT: Searching all possible paths of graph/maze until exit is path found
 def search(starting_room):
 
     # Rooms visited counter
@@ -122,23 +79,25 @@ def search(starting_room):
     # opposing directions for back tracking
     back_track = {'n':'s', 's':'n', 'e':'w', 'w':'e'}
 
-    # What room we are currently in
-    current_room = player.current_room
-    print("Players current room: ", current_room)
-    # The id we are currently in
-    print("Players current room ID: ", player.current_room.id)
-    room_id = player.current_room.id
-
-    #prints out directions
-    print("Exits", player.current_room.get_exits() ) 
-
-    # build graph and make a dictionary of rooms 
-    room_dict = {}      # 0: { n: '?', s: '?', e: '?', w: '?' }
-
     
     # while the length of taversal_graph does not equal the length of room_graph
     while len(traversal_graph) != len(room_graph):
-        print("current room: ", current_room.id) # not updating
+
+         # What room we are currently in
+        current_room = player.current_room
+        print("Players current room: ", current_room)
+        # The id we are currently in
+        print("Players current room ID: ", player.current_room.id)
+        room_id = current_room.id
+
+        #prints out directions
+        #print("Exits", player.current_room.get_exits() ) 
+
+        # build graph and make a dictionary of rooms 
+        room_dict = {}      # 0: { n: '?', s: '?', e: '?', w: '?' }
+
+
+
         # if room_id is not in traversal_graph:
         if room_id not in traversal_graph:
             # Iterate through current room exits to find the possible exits:
@@ -147,65 +106,101 @@ def search(starting_room):
                 print("i: ", i) # prints n direction
                 room_dict[i] = '?'
                 print("building room dictionary", room_dict) 
-            # update room ??? 
+            # updating the room  
             if traversal_path:
+                # store the direction of the last traveled path
                 prev_room = back_track[traversal_path[-1]]
-                print('prev_room', prev_room) # not printing
-                room_dict[prev_room] = prev_room
-                print('prev_room', prev_room)
-            #add the unexplored room to the room id
+                print('prev_room', prev_room) 
+                # add the last traveled path to the counter
+                room_dict[prev_room] = visited_room
+                print('visited_room counter', visited_room)
+            #add the unexplored room '?' to the corresponding room_id
             traversal_graph[room_id] = room_dict
             print('room dict after while', room_dict)
             
 
         else:
-            break
+            # add room_id from traversal_graph to room_dict
+            room_dict = traversal_graph[room_id]
+            print('else: room dict: ', room_dict)
 
         # Now I see the '?', need to check if there is a room connected
+        # store '?'
 
         possible_exits = list()
 
         # iterate through dictionary
         for direction in room_dict:
-            # If '?' at the room dictionary index/value
+            # If there is '?' at the room dictionary index/value
             if room_dict[direction] == '?':
-                # store them
+                # store them so I can use them to travel
                 possible_exits.append(direction)
                 print('Possible exit: ', possible_exits)
 
         # if there is an unknown direction
-        if len(possible_exits) != 0:
+        if len(possible_exits) != 0: # len(possible_exits) gives me 1
             # randomly pick a possible exit
             random.shuffle(possible_exits)
             print('next possible exits: ', possible_exits)
 
             direction = possible_exits[0]
-            print('You moved: ', direction)
+            print('You moved the randomly picked direction: ', direction)
 
+            # append the random picked direction to traversal path
             traversal_path.append(direction)
             print('traversal path in conditional (186)', traversal_path)
 
-            for move in traversal_path:
-                # move player in 'direction' of travel_path
-                player.travel(move)
-                print('move', move)
-                print('exits in current room', player.current_room.get_exits())
+            # move player in 'direction' of travel_path
+            player.travel(direction)
+            print('move', direction)
+            print('exits in current room', player.current_room.get_exits())
 
-                exits = player.current_room.get_exits()
-                print('pick exit', exits[0])
-                
-                move = player.current_room
-                print('move = current room:', move) # not printing
-            
-            traversal_path.append(exits[0])
-            print('traversal path after move loop', traversal_path)
+            # grab the player current room 
+            move_rooms = player.current_room
+            print('move_rooms = current room:', move_rooms)
+            print('move_rooms = current room ID:', move_rooms)
+            print('dictionary after move: ', traversal_graph[current_room.id][direction])
 
-             
+            # replace '?' with room_ids
+            traversal_graph[current_room.id][direction] = move_rooms.id
+            visited_room = current_room.id
+
+        else: 
+            # BFS to search for next possible exit using room_id
+
+            next_room = find_shortest_path(room_id)
+            print('BFS path to next room: ', next_room)
+
+            # if path from next_room has results from bfs 
+            if next_room is not None and len(next_room) > 0: 
+                print('this code ran')
+
+                # iterate the length of the room to access room_ids
+                for i in range(len(next_room) - 1):
+                    print('else i: ', i)
+                    print('traversal graph at [i]', traversal_graph[next_room[i]])
+                    
+                    # iterate the traversal_graphs next_room value to acces it's direction
+                    for direction in traversal_graph[next_room[i]]:
+                        print('direction in double for loop', direction)
+                        
+                        # if the traversal_graphs next room value and direction matches the bfs found next room value
+                        if traversal_graph[next_room[i]][direction] == next_room[i + 1]:
+                            # append the direction to travel_path
+                            traversal_path.append(direction)
+                            # move th player to that room
+                            player.travel(direction)
+            else:
+                break
+
+
         
 
+search(room_graph)
 
-print("---------------")
-print("Search", search(room_graph))
+# print("---------------")
+# print("Search", search(room_graph))
+# # search(room_graph)
 print("---------------")
 print("Traversal Graph", traversal_graph) 
 print("---------------")
