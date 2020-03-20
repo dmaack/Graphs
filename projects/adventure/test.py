@@ -1,9 +1,8 @@
 from room import Room
 from player import Player
 from world import World
-from util import Stack, Queue
 
-
+import time
 import random
 from ast import literal_eval
 
@@ -13,8 +12,8 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
-# map_file = "maps/test_loop.txt"
+# map_file = "maps/test_cross.txt"
+map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
 
@@ -27,22 +26,12 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+# Fill this out with directions to walk
+# traversal_path = ['n', 'n']
+traversal_path = []
+
 
 '''
-READ.ME Notes:
-
-    You may find the commands useful:
-        `player.current_room.id`, 
-        `player.current_room.get_exits()`, 
-        `player.travel(direction)` 
-
-Plan:
-
-    1: construct your own traversal graph
-    2: use BFS for exploring / searching 
-    3: Use DFT for creating map / maze ( what about recursion? )
-        3a: how to connect / compare to test data (room_graph)
-        3b: need a counter for keeping track of previous rooms?
 
    def dft_recursive(self, starting_vertex, visited=None):
         """
@@ -72,46 +61,33 @@ Plan:
 
 '''
 
-# Fill this out with directions to walk
-# traversal_path = ['n', 'n']
-traversal_path = []
-traversal_graph = {}
-
-def find_shortest_path(starting_room_id): #search for shortest path (BFS)
-    # Create a queue
-    q = Queue()
-    # Enqueue a PATH TO the starting vertex (starting_room_id)
-    q.enqueue([starting_room_id])
-    # Create a set to store visited room_id's
-    visited = set() 
-
-    # While the queue is not empty...
-    while q.size() > 0:
-        # Dequeue the first available PATH
-        path = q.dequeue()
-        print("path", path, "\n\n")
-        # current_room = Grab the last room_id from the end of the PATH
-        current_room = path[-1]
-        print("current room", current_room, "\n\n")
-        visited.add(current_room)
-        print("visited", visited)
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 
-print(find_shortest_path(room_graph))
+# class AdvGraph():
+#     def __init__(self, size=0):
+#         self.rooms ={}
+#         self.size = size
+    
+#     def add_rooms(self, room_id):
+#         self.rooms[room_id] = {}
+#         self.size += 1
+    
+#     def get_all_rooms(self, starting_room):
 
 
 
-
-
-
-
-
-
-
-
-
-
-# ---------------------------------- My Code Above ---------------------
 
 
 # TRAVERSAL TEST
@@ -134,12 +110,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.current_room.print_room_description(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     elif cmds[0] == "q":
-#         break
-#     else:
-#         print("I did not understand that command.")
+player.current_room.print_room_description(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    elif cmds[0] == "q":
+        break
+    else:
+        print("I did not understand that command.")

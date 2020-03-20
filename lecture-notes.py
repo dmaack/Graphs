@@ -41,4 +41,6 @@ Definitions:
         # open files to read graph
         # add directions in traverse_path = []
         # 
-        # try to go for non randomness first to help track bugs correctly 
+        # try to go for non randomness first to help track bugs correctly
+        # 
+        # look at word and island problems, separated get neighbors, island counter, traversal 
