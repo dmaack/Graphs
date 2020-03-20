@@ -12,8 +12,8 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+map_file = "maps/test_line.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
@@ -94,10 +94,24 @@ def find_shortest_path(starting_room_id): #search for shortest path (BFS)
         current_room = path[-1]
         print("current room", current_room, "\n\n")
         visited.add(current_room)
-        # print("visited", visited)
+        print("visited", visited)
 
 
+        # for each connection in current room
+        for direction in traversal_graph[current_room]:
+            print('Traversal Graph Directions in BFS', traversal_graph[current_room])
 
+            if traversal_graph[current_room][direction] == '?':
+                print('path in conditional: ', path)
+                # return available paths
+                return path
+                
+            elif traversal_graph[current_room][direction] not in visited:
+                # create new path to append/add direction/edge
+                new_path = list(path)
+                path.append(traversal_graph[current_room][direction])
+                q.enqueue(new_path)
+                print('Appending direction', new_path)
 
         
 
@@ -125,11 +139,11 @@ def search(starting_room):
     # while the length of taversal_graph does not equal the length of room_graph
     while len(traversal_graph) != len(room_graph):
         print("current room: ", current_room.id)
-        # if room id is not in traversal_graph:
+        # if room_id is not in traversal_graph:
         if room_id not in traversal_graph:
-            # Iterate to find the possible exits:
+            # Iterate through current room exits to find the possible exits:
             for i in current_room.get_exits():
-                # add the "?" in the room dictionary
+                # add the "?" to corresponding key in the room dictionary
                 print("i: ", i) # prints n direction
                 room_dict[i] = '?'
                 print("room dictionary", room_dict) 
@@ -145,6 +159,40 @@ def search(starting_room):
         else:
             break
 
+        # Now I see the '?', need to check if there is a room connected
+
+        possible_exits = list()
+
+        # iterate through dictionary
+        for direction in room_dict:
+            # If '?' at the room dictionary index/value
+            if room_dict[direction] == '?':
+                # store them
+                possible_exits.append(direction)
+                print('Possible exit: ', possible_exits)
+
+        # if there is an unknown direction
+        if len(possible_exits) != 0:
+            # randomly pick a possible exit
+            random.shuffle(possible_exits)
+            print('next possible exits: ', possible_exits)
+
+            direction = possible_exits[0]
+            print('You moved: ', direction)
+
+            traversal_path.append(direction)
+            print('traversal path in if possible_exists', traversal_path)
+
+            for move in traversal_path:
+                # move player in 'direction' of travel_path
+                player.travel(move)
+                print('move', move)
+                
+                move = player.current_room
+                print('move = current room:', player.current_room.get_exits())
+
+             
+        
 
 
 print("---------------")
